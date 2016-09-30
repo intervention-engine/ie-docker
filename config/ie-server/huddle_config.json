@@ -1,0 +1,70 @@
+{
+  "name": "Interdisciplinary Huddle2",
+  "leaderID": "1",
+  "days": [1],
+  "lookAhead": 14,
+  "riskConfig": {
+    "riskMethod": {"system": "http://interventionengine.org/risk-assessments", "code": "MultiFactor"},
+    "frequencyConfigs": [
+      {
+        "minScore": 4,
+        "maxScore": 4,
+        "minDaysBetweenHuddles": 5,
+        "maxDaysBetweenHuddles": 7
+      }, {
+        "minScore": 3,
+        "maxScore": 3,
+        "minDaysBetweenHuddles": 15,
+        "maxDaysBetweenHuddles": 21
+      }, {
+        "minScore": 2,
+        "maxScore": 2,
+        "minDaysBetweenHuddles": 36,
+        "maxDaysBetweenHuddles": 42
+      }, {
+        "minScore": 1,
+        "maxScore": 1,
+        "minDaysBetweenHuddles": 85,
+        "maxDaysBetweenHuddles": 91
+      }
+    ]
+  },
+  "eventConfig": {
+    "encounterConfigs": [
+      {
+        "lookBackDays": 7,
+        "typeCodes": [
+          {
+            "name": "Hospital Discharge",
+            "system": "http://snomed.info/sct",
+            "code": "32485007",
+            "useEndDate": true
+          },
+          {
+            "name": "Hospital Admission",
+            "system": "http://snomed.info/sct",
+            "code": "32485007"
+          },
+          {
+            "name": "Hospital Re-Admission Discharge",
+            "system": "http://snomed.info/sct",
+            "code": "417005",
+            "useEndDate": true
+          },
+          {
+            "name": "Hospital Re-Admission",
+            "system": "http://snomed.info/sct",
+            "code": "417005"
+          },
+          {
+            "name": "Emergency Room Admission",
+            "system": "http://snomed.info/sct",
+            "code": "50849002"
+          }
+        ]
+      }
+    ]
+  },
+  "rollOverDelayInDays": 3,
+  "schedulerCronSpec": "0 0 0 * * *"
+}

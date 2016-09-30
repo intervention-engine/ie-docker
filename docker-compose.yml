@@ -1,0 +1,65 @@
+version: '2'
+services:
+  ie-server:
+    image: interventionengine/ie-server
+    ports:
+      - "3001"
+    volumes:
+      - ./config/ie-server:/config
+    depends_on:
+      - mongo
+    env_file:
+      - ./config/default.env
+    command: dockerize -wait tcp://mongo:27017 -timeout 300s ./server -loadCodes
+  ie-ccda-endpoint:
+    image: interventionengine/ie-ccda-endpoint
+    ports:
+      - "3000"
+    depends_on:
+      - ie-server
+    env_file:
+      - ./config/default.env
+  ie-multifactorriskservice:
+    image: interventionengine/ie-multifactorriskservice
+    ports:
+      - "9000"
+    depends_on:
+      - ie-server
+      - mongo
+    env_file:
+      - ./config/default.env
+      - ./config/site.env
+    command: dockerize -wait tcp://mongo:27017 -timeout 300s ./multifactorriskservice
+    # command: dockerize -wait tcp://mongo:27017 -timeout 300s ./mock-service -confirm-mock # for testing only!
+  ie-integrator:
+    image: interventionengine/ie-integrator
+    volumes:
+      - ./data/ie-integrator:/data
+      - ./config/ie-integrator:/config
+    depends_on:
+      - ie-server
+      - mongo
+      - ie-ccda-endpoint
+    env_file:
+      - ./config/default.env
+      - ./config/site.env
+    command: dockerize -wait http://ie-ccda-endpoint:3000 -wait tcp://mongo:27017 -timeout 300s ./integrator
+  ie-nginx:
+    image: interventionengine/ie-nginx
+    ports:
+      - "443:443"
+    volumes:
+      - ./config/ie-nginx:/config
+      - ./logs/ie-nginx:/etc/nginx/logs
+    depends_on:
+      - ie-server
+      - ie-multifactorriskservice
+    env_file:
+      - ./config/default.env
+    command: dockerize -template /etc/nginx/nginx.conf.tmpl:/etc/nginx/nginx.conf nginx -g 'daemon off;'
+  mongo:
+    image: mongo
+    ports:
+      - "27017"
+    volumes:
+      - ./data/mongo/db:/data/db

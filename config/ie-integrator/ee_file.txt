@@ -1,0 +1,2 @@
+# list employee identifiers to import from the hie
+# one identifier per line
