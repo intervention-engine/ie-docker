@@ -6,6 +6,7 @@ services:
       - "3001"
     volumes:
       - ./config/ie-server:/config
+      - ./logs/ie-server:/etc/ie-server/logs
     depends_on:
       - mongo
     env_file:
@@ -34,8 +35,9 @@ services:
   ie-integrator:
     image: interventionengine/ie-integrator
     volumes:
-      - ./data/ie-integrator:/data
       - ./config/ie-integrator:/config
+      - ./data/ie-integrator:/data
+      - ./logs/ie-integrator:/etc/ie-integrator/logs
     depends_on:
       - ie-server
       - mongo
