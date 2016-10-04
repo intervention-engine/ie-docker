@@ -189,3 +189,24 @@ This will download any new images, producing output related to the downloads as 
 ```
 docker-compose up
 ```
+
+Configuring Rolling Logs
+========================
+
+It's often desirable to roll the logs so that any given log file does not grow to be too large.  To configure rolling logs, you'll need to add a `logrotate` configuration in `/etc/logrotate.d` for the path where logs are stored.  By default, this is the folder _ie-docker/logs_ and its subfolders.  An example configuration is as follows (shown for the case where the _ie-docker_ folder exists in _/opt_):
+
+```
+/opt/ie-docker/logs/*/*.log {
+        weekly
+        missingok
+        rotate 52
+        compress
+        delaycompress
+        notifempty
+        create 640 root adm
+}
+```
+
+The above uses a wildcard to capture logs in all subdirectories of _/opt/ie-docker/logs_, but you can also create a specific `logrotate` configuration for each subdirectory if you prefer.
+
+For more information on configuring `logrotate`, see the [Logrotate Man Page](https://linuxconfig.org/logrotate-8-manual-page)
