@@ -1,2 +1,8 @@
 /data
 /logs
+/config/ie-nginx/nginx.crt
+/config/ie-nginx/nginx.key
+/alternates/*/data
+/alternates/*/logs
+/alternates/*/config/ie-nginx/nginx.crt
+/alternates/*/config/ie-nginx/nginx.key
