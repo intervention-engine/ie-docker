@@ -13,7 +13,7 @@ services:
       - ./config/default.env
     command: dockerize -wait tcp://mongo:27017 -timeout 300s ./server -loadCodes
   ie-ccda-endpoint:
-    image: interventionengine/ie-ccda-endpoint:v1.0.0-rc.1
+    image: interventionengine/ie-ccda-endpoint:v1.0.0
     ports:
       - "3000"
     depends_on:
